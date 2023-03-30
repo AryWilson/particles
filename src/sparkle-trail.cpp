@@ -4,6 +4,7 @@
 #include <cmath>
 #include <string>
 #include <vector>
+#include <time.h> 
 #include "agl/window.h"
 
 using namespace std;
@@ -47,6 +48,30 @@ public:
 
   void updateConfetti()
   {
+    bool one = true;
+
+    for (int i = 0; i < mParticles.size(); i++){
+      if(one && mParticles[i].color.w <=0){
+        //one new particle
+        mParticles[i].color = vec4(agl::randomUnitCube(), 1);
+        mParticles[i].size = 0.25;
+        mParticles[i].rot = 0.0;
+        mParticles[i].pos = position;
+        mParticles[i].vel = -velocity;
+        one = false;
+
+      } else{
+        // updates the transparency
+        mParticles[i].color.w -= 0.1;
+        // updates the size
+        mParticles[i].size += 0.1;
+        // updates the rotation
+        mParticles[i].rot += 0.1;
+        // updates the pos by vel
+        mParticles[i].pos += mParticles[i].vel;
+      }
+
+    }
   }
 
   void drawConfetti()
@@ -82,7 +107,15 @@ public:
     renderer.perspective(glm::radians(60.0f), aspect, 0.1f, 50.0f);
 
     renderer.lookAt(eyePos, lookPos, up);
+
+    // send star in circles
+    position.x = 10*cos(time(NULL));
+    position.y = 10*sin(time(NULL));
+    float dx = 10*cos(time(NULL)+1) - position.x;
+    float dy = 10*sin(time(NULL)+1) - position.y;
+    velocity = vec3(dx,dy,0);
     renderer.sprite(position, vec4(1.0f), 0.25f);
+
     updateConfetti();
     drawConfetti();
     renderer.endShader();
@@ -94,6 +127,7 @@ protected:
   vec3 lookPos = vec3(0, 0, 0);
   vec3 up = vec3(0, 1, 0);
   vec3 position = vec3(1, 0, 0);
+  vec3 velocity = vec3(0, 0, 0);
 
   std::vector<Particle> mParticles;
 };

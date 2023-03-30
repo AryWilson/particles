@@ -1,9 +1,14 @@
 // Bryn Mawr College, alinen, 2020
 //
 
+// Your program should modify billboard-animated.vs to compute the UV coordinates based on the number of rows and columns in the sprite sheet and the current frame.
+
+// Your program should modify explosion.cpp to change the current frame based on the time. The animation framerate should be 30 frames per second.
+
 #include <cmath>
 #include <string>
 #include <vector>
+#include <time.h> 
 #include "agl/window.h"
 
 using namespace std;
@@ -46,7 +51,9 @@ public:
     renderer.texture("image", "explosion");
 
     // 30 fps => each frame 1/30 long, e.g. when time = 1s, we play frame 30
-    frame = 0;
+    // frame = round(((clock()%1000)/1000.0f)*30.0f); // 30 sprites
+    frame = round(((clock())/1000.0f)*30.0f); // infinite sprites
+
     renderer.setUniform("Frame", frame);
     renderer.setUniform("Rows", numRows);
     renderer.setUniform("Cols", numCols);

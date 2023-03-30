@@ -4,6 +4,7 @@
 #include <cmath>
 #include <string>
 #include <vector>
+#include <time.h> 
 #include "agl/window.h"
 
 using namespace std;
