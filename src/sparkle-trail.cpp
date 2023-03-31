@@ -29,7 +29,6 @@ public:
     createConfetti(500);
     renderer.setDepthTest(false);
     renderer.blendMode(agl::ADD);
-    ct = clock();
   }
 
   void createConfetti(int size)
@@ -63,13 +62,13 @@ public:
 
       } else{
         // updates the transparency
-        mParticles[i].color.w -= 0.1;
+        mParticles[i].color.w -= dt();
         // updates the size
-        mParticles[i].size += 0.1;
+        mParticles[i].size += dt();
         // updates the rotation
-        mParticles[i].rot += 0.1;
+        mParticles[i].rot += dt();
         // updates the pos by vel
-        mParticles[i].pos += deltaTime*mParticles[i].vel;
+        mParticles[i].pos += dt()*mParticles[i].vel;
       }
 
     }
@@ -102,7 +101,9 @@ public:
   }
 
   void draw() {
+    // renderer.blendMode(agl::ADD); //optional
     renderer.beginShader("sprite");
+    // renderer.texture("image","particle"); // done in draw
 
     float aspect = ((float)width()) / height();
     renderer.perspective(glm::radians(60.0f), aspect, 0.1f, 50.0f);
@@ -111,19 +112,17 @@ public:
 
 
     // send start in circle relative to current time
-    // calculate time since last frame
-    deltaTime = clock() - ct;
-    // set time for next fram as current time
-    ct = clock();
+
     // current velocity dependent on deltaTime since last frame
     // change in position from last frame position to current fram position
+    ct = elapsedTime();
     float dx = 10*cos(ct) - position.x;
     float dy = 10*sin(ct) - position.y;
     velocity = vec3(dx,dy,0);
     
     // calculate new positon for star particle
     position.x = 10*cos(ct);
-    position.y = 10*sin(ct);
+    position.y = 10*sin(ct); 
 
     renderer.sprite(position, vec4(1.0f), 0.25f);
 
@@ -140,7 +139,6 @@ protected:
   vec3 position = vec3(1, 0, 0);
   vec3 velocity = vec3(0, 0, 0);
   float ct = 0;
-  float deltaTime = 0;
 
   std::vector<Particle> mParticles;
 };
