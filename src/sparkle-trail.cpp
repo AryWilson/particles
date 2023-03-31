@@ -29,6 +29,7 @@ public:
     createConfetti(500);
     renderer.setDepthTest(false);
     renderer.blendMode(agl::ADD);
+    ct = clock();
   }
 
   void createConfetti(int size)
@@ -68,7 +69,7 @@ public:
         // updates the rotation
         mParticles[i].rot += 0.1;
         // updates the pos by vel
-        mParticles[i].pos += mParticles[i].vel;
+        mParticles[i].pos += deltaTime*mParticles[i].vel;
       }
 
     }
@@ -108,12 +109,22 @@ public:
 
     renderer.lookAt(eyePos, lookPos, up);
 
-    // send star in circles
-    position.x = 10*cos(time(NULL));
-    position.y = 10*sin(time(NULL));
-    float dx = 10*cos(time(NULL)+1) - position.x;
-    float dy = 10*sin(time(NULL)+1) - position.y;
+
+    // send start in circle relative to current time
+    // calculate time since last frame
+    deltaTime = clock() - ct;
+    // set time for next fram as current time
+    ct = clock();
+    // current velocity dependent on deltaTime since last frame
+    // change in position from last frame position to current fram position
+    float dx = 10*cos(ct) - position.x;
+    float dy = 10*sin(ct) - position.y;
     velocity = vec3(dx,dy,0);
+    
+    // calculate new positon for star particle
+    position.x = 10*cos(ct);
+    position.y = 10*sin(ct);
+
     renderer.sprite(position, vec4(1.0f), 0.25f);
 
     updateConfetti();
@@ -128,6 +139,8 @@ protected:
   vec3 up = vec3(0, 1, 0);
   vec3 position = vec3(1, 0, 0);
   vec3 velocity = vec3(0, 0, 0);
+  float ct = 0;
+  float deltaTime = 0;
 
   std::vector<Particle> mParticles;
 };
