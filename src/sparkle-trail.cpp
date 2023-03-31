@@ -46,7 +46,7 @@ public:
     }
   }
 
-  void updateConfetti()
+  void updateConfetti(float dt)
   {
     bool one = true;
 
@@ -62,13 +62,13 @@ public:
 
       } else{
         // updates the transparency
-        mParticles[i].color.w -= dt();
+        mParticles[i].color.w -= dt;
         // updates the size
-        mParticles[i].size += dt();
+        mParticles[i].size += dt;
         // updates the rotation
-        mParticles[i].rot += dt();
+        mParticles[i].rot += dt;
         // updates the pos by vel
-        mParticles[i].pos += dt()*mParticles[i].vel;
+        mParticles[i].pos += dt*mParticles[i].vel;
       }
 
     }
@@ -126,7 +126,7 @@ public:
 
     renderer.sprite(position, vec4(1.0f), 0.25f);
 
-    updateConfetti();
+    updateConfetti(dt());
     drawConfetti();
     renderer.endShader();
   }

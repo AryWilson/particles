@@ -21,9 +21,13 @@ void main()
   uv = vPosition.xy; 
   // compute UV coordinates based on Frame
   int i = Frame%(Cols*Rows);
-  int x = (i%Cols)+1;
-  int y = round(((i+1)-x)/Rows);
-  uv = vec2(vPosition.x + x, vPosition.y + y);
+  int row = int(i/Cols);
+  int col = i%(Cols);
+
+  int u = (vPosition.x + col)/Cols;
+  int v = (vPosition.y + row)/Rows;
+
+  uv = vec2(u,v);
   
   vec3 z = normalize(CameraPos - Offset);
   vec3 x = normalize(cross(vec3(0,1,0), z));
