@@ -95,20 +95,25 @@ public:
 
     // draw tree
     renderer.texture("Image", "tree");
+
+    
+    // float d = std::max(imgW,imgH);
+    // scale to correct size, unit cube
+    // renderer.scale(vec3(1.0f/d, 1.0f/d, 1.0f));
+    // renderer.scale(vec3(imgW, imgH, 1.0f));
+    //rotate to follow camera
+    vec3 n = normalize(eyePos);
+    float theta = atan2(-n.z,n.x)+M_PI_2;
+
     renderer.push();
+    renderer.rotate(theta,vec3(0,1,0));
+    renderer.scale(vec3(imgW/imgH, imgH/imgH, 1.0f));
     renderer.translate(vec3(-0.5, -0.5, 0));
     renderer.quad(); // vertices span from (0,0,0) to (1,1,0)
     renderer.pop();
 
-    
-    float d = std::max(imgW,imgH);
-    //scale to correct size, unit cube
-    renderer.scale(vec3(1.0f/d, 1.0f/d, 1.0f));
-    //rotate to follow camera
-    float theta = atan(eyePos.z/eyePos.x);
-    renderer.rotate(theta,vec3(0,1,0));
+
   
-  // I did some work on the particle hw, but i couldn't get the graphics envioroment set up on my computer so I couldn't test anything i wrote (usually i would go into the lab)
 
     renderer.endShader();
   }

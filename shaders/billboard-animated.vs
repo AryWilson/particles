@@ -24,8 +24,8 @@ void main()
   int row = int(i/Cols);
   int col = i%(Cols);
 
-  int u = (vPosition.x + col)/Cols;
-  int v = (vPosition.y + row)/Rows;
+  int u = int((vPosition.x + col)/Cols);
+  int v = int((vPosition.y + row)/Rows);
 
   uv = vec2(u,v);
   

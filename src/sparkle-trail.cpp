@@ -26,7 +26,7 @@ public:
 
   void setup() {
     setWindowSize(1000, 1000);
-    createConfetti(500);
+    createConfetti(50);
     renderer.setDepthTest(false);
     renderer.blendMode(agl::ADD);
   }
@@ -48,14 +48,14 @@ public:
 
   void updateConfetti(float dt)
   {
-    bool one = true;
+    bool one = agl::random() > 0.5;
 
     for (int i = 0; i < mParticles.size(); i++){
       if(one && mParticles[i].color.w <=0){
         //one new particle
-        mParticles[i].color = vec4(agl::randomUnitCube(), 1);
+        mParticles[i].color = vec4(agl::randomUnitCube(), 1.0);
         mParticles[i].size = 0.25;
-        mParticles[i].rot = 0.0;
+        mParticles[i].rot = agl::random();
         mParticles[i].pos = position;
         mParticles[i].vel = -velocity;
         one = false;
@@ -64,7 +64,7 @@ public:
         // updates the transparency
         mParticles[i].color.w -= dt;
         // updates the size
-        mParticles[i].size += dt;
+        mParticles[i].size += 0.25*dt;
         // updates the rotation
         mParticles[i].rot += dt;
         // updates the pos by vel
@@ -115,14 +115,14 @@ public:
 
     // current velocity dependent on deltaTime since last frame
     // change in position from last frame position to current fram position
-    ct = elapsedTime();
-    float dx = 10*cos(ct) - position.x;
-    float dy = 10*sin(ct) - position.y;
+    ct = fmod((elapsedTime()),4*M_PI);
+    float dx = cos(dt()) + agl::random() - 0.5f;
+    float dy = sin(dt()) + agl::random() - 0.5f;
     velocity = vec3(dx,dy,0);
     
     // calculate new positon for star particle
-    position.x = 10*cos(ct);
-    position.y = 10*sin(ct); 
+    position.x = cos(ct);
+    position.y = sin(ct); 
 
     renderer.sprite(position, vec4(1.0f), 0.25f);
 
