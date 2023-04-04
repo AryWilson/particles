@@ -52,27 +52,25 @@ public:
 
     // 30 fps => each frame 1/30 long, e.g. when time = 1s, we play frame 30
     // frame = round(((clock()%1000)/1000.0f)*30.0f); // 30 sprites
-    frame = round(((clock())/1000.0f)*30.0f); // infinite sprites
-    if(frame != oldFrame){
-        // the frame has just changed -> reset position
-        upPos = vec3(0, 0, 0);
-    } else {
-        // the frame has not changed -> move sprite upwards
-        upPos.y += 0.1*dt();
-    }
-    oldFrame = frame;
-    renderer.translate(upPos);
-
+    frame = round(((clock())/1000.0f)); // infinite sprites
+    if(oldT + 0.5 < elapsedTime()){
+        // every 4 frames reverse dir
+      bol = -1.0f*bol;
+      oldT = elapsedTime();
+    } 
+    upPos.y += bol*dt();
 
     renderer.setUniform("Frame", frame);
     renderer.setUniform("Rows", numRows);
     renderer.setUniform("Cols", numCols);
+    renderer.setUniform("topDown", true);
+
 
     float aspect = ((float)width()) / height();
     renderer.perspective(glm::radians(60.0f), aspect, 0.1f, 50.0f);
 
     renderer.lookAt(eyePos, lookPos, up);
-    renderer.sprite(vec3(0.0), vec4(1.0f), 1.0);
+    renderer.sprite(upPos, vec4(1.0f), 1.0);
 
     renderer.endShader();
   }
@@ -84,9 +82,10 @@ protected:
   vec3 up = vec3(0, 1, 0);
   vec3 upPos = vec3(0, 0, 0);
   int frame = 0;
-  int oldFrame = 0;
+  float oldT = 0;
   int numRows = 4;
   int numCols = 8;
+  float bol = 0.25;
 };
 
 int main(int argc, char** argv)

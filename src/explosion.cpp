@@ -52,11 +52,12 @@ public:
 
     // 30 fps => each frame 1/30 long, e.g. when time = 1s, we play frame 30
     // frame = round(((clock()%1000)/1000.0f)*30.0f); // 30 sprites
-    frame = round(((clock())/1000.0f)*30.0f); // infinite sprites
+    frame = round(((clock())/1000.0f)); // infinite sprites
 
     renderer.setUniform("Frame", frame);
     renderer.setUniform("Rows", numRows);
     renderer.setUniform("Cols", numCols);
+    renderer.setUniform("topDown", false);
 
     float aspect = ((float)width()) / height();
     renderer.perspective(glm::radians(60.0f), aspect, 0.1f, 50.0f);
