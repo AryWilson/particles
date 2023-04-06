@@ -52,13 +52,18 @@ public:
 
     // 30 fps => each frame 1/30 long, e.g. when time = 1s, we play frame 30
     // frame = round(((clock()%1000)/1000.0f)*30.0f); // 30 sprites
-    frame = round(((clock())/1000.0f)); // infinite sprites
+    float c = clock();
+    frame = round(((c)/1000.0f)); // infinite sprites
     if(oldT + 0.5 < elapsedTime()){
         // every 4 frames reverse dir
       bol = -1.0f*bol;
       oldT = elapsedTime();
     } 
     upPos.y += bol*dt();
+
+    if(fmod(c,1000)==0){
+
+    }
 
     renderer.setUniform("Frame", frame);
     renderer.setUniform("Rows", numRows);
@@ -70,7 +75,7 @@ public:
     renderer.perspective(glm::radians(60.0f), aspect, 0.1f, 50.0f);
 
     renderer.lookAt(eyePos, lookPos, up);
-    renderer.sprite(upPos, vec4(1.0f), 1.0);
+    renderer.sprite(upPos, vec4(vec3(1.0f),alpha), 1.0);
 
     renderer.endShader();
   }
@@ -86,6 +91,7 @@ protected:
   int numRows = 4;
   int numCols = 8;
   float bol = 0.25;
+  float alpha = 1.0;
 };
 
 int main(int argc, char** argv)

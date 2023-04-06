@@ -1,6 +1,7 @@
 // Bryn Mawr College, alinen, 2020
 //
 
+#define _USE_MATH_DEFINES
 #include <cmath>
 #include <string>
 #include <vector>
