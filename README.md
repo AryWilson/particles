@@ -2,7 +2,7 @@
 
 Implements particle demos
 
-![Alt text](/images/sparkles.gif?raw=true)
+![Alt text](/images/reps1.gif?raw=true)
 
 ## How to build
 
@@ -55,10 +55,10 @@ Single axis billboard implemented with a shader.
 ![Alt text](/images/tree.gif?raw=true)
 
 Animated explotion implemented with a sprite board.
-![Alt text](/images/sprite.gif?raw=true)
+![Alt text](/images/explode.gif?raw=true)
 
 Particle that moves around in a circle with a trail that moves tangentially off of it's path. Implemented with an object pool.
-![Alt text](/images/trail.gif?raw=true)
+![Alt text](/images/spark.gif?raw=true)
 
 
 
