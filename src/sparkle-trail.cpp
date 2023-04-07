@@ -31,7 +31,7 @@ public:
   // set up object pool
   void setup() {
     setWindowSize(1000, 1000);
-    createConfetti(50);
+    createConfetti(100);
     renderer.setDepthTest(false);
     renderer.blendMode(agl::ADD);
   }
@@ -46,7 +46,7 @@ public:
       particle.color = vec4(agl::randomUnitCube(), 1);
       particle.size = 0.25;
       particle.rot = 0.0;
-      particle.pos = agl::randomUnitCube();
+      particle.pos = vec3(1, 0, 0);
       particle.vel = agl::randomUnitCube();
       mParticles.push_back(particle);
     }
@@ -57,7 +57,7 @@ public:
   */
   void updateConfetti(float dt)
   {
-    bool one = agl::random() > 0.5;
+    bool one = agl::random() > 0.25;
 
     for (int i = 0; i < mParticles.size(); i++){
       if(one && mParticles[i].color.w <=0){

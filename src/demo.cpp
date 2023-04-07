@@ -65,10 +65,10 @@ public:
     upPos.y += bol*dt();
 
     // every time the frame changes, reset the alpha, otherwise decrease alpha
-    if(fmod(c,1000)<=10){
+    if(fmod(c,1000)<=40){
       alpha=1.0f;
     } else {
-      alpha -= 0.05f;
+      alpha -= 0.01f;
     }
 
     renderer.setUniform("Frame", frame);

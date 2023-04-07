@@ -100,8 +100,8 @@ target_link_libraries(sparkles ${CORE})
 add_executable(explosion src/explosion.cpp ${SOURCES} ${SHADERS})
 target_link_libraries(explosion ${CORE})
 
-add_executable(fire src/fire.cpp ${SOURCES} ${SHADERS})
-target_link_libraries(fire ${CORE})
+add_executable(demo src/demo.cpp ${SOURCES} ${SHADERS})
+target_link_libraries(demo ${CORE})
 
 add_executable(billboard-axis src/billboard-axis.cpp ${SOURCES} ${SHADERS})
 target_link_libraries(billboard-axis ${CORE})

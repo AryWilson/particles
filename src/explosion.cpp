@@ -52,7 +52,7 @@ public:
     renderer.texture("image", "explosion");
 
     // 30 fps => each frame 1/30 long, e.g. when time = 1s, we play frame 30
-    frame = round(((clock())/1000.0f)*30); 
+    frame = round(((clock())/300.0f)); 
 
     renderer.setUniform("Frame", frame);
     renderer.setUniform("Rows", numRows);
