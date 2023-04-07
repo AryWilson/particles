@@ -1,5 +1,9 @@
 // Bryn Mawr College, alinen, 2020
+// edited: awilson, April 2023
 //
+
+/* implements an object pool and an emmited using billboards
+*/
 
 #define _USE_MATH_DEFINES
 #include <cmath>
@@ -24,7 +28,7 @@ class Viewer : public Window {
 public:
   Viewer() : Window() {
   }
-
+  // set up object pool
   void setup() {
     setWindowSize(1000, 1000);
     createConfetti(50);
@@ -32,6 +36,7 @@ public:
     renderer.blendMode(agl::ADD);
   }
 
+  //initialize objects in pool
   void createConfetti(int size)
   {
     renderer.loadTexture("particle", "../textures/star4.png", 0);
@@ -47,6 +52,9 @@ public:
     }
   }
 
+  /* creates one new on-screen particle if object pool has invisible particle
+  * updates color, size, rotation, and position of all other particles in pool
+  */
   void updateConfetti(float dt)
   {
     bool one = agl::random() > 0.5;
@@ -75,6 +83,7 @@ public:
     }
   }
 
+  // render all sprites in pool
   void drawConfetti()
   {
     renderer.texture("image", "particle");
@@ -101,8 +110,9 @@ public:
   void keyUp(int key, int mods) {
   }
 
+  // update global velocity and position. call shader
   void draw() {
-    // renderer.blendMode(agl::ADD); //optional
+    // renderer.blendMode(agl::ADD); //done in setup
     renderer.beginShader("sprite");
     // renderer.texture("image","particle"); // done in draw
 

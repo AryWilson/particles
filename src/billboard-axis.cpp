@@ -1,5 +1,9 @@
 // Bryn Mawr College, alinen, 2020
-//
+// edited: awilson, April 2023
+
+
+/* implements a tree billboard that rotates around the y axis based on user input
+*/
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <string>
@@ -15,7 +19,8 @@ class Viewer : public Window {
 public:
   Viewer() : Window() {
   }
-
+  
+  /* load the textures, get the dimentions for the textures*/
   void setup() {
     setWindowSize(1000, 1000);
     renderer.loadShader("simple-texture",
@@ -25,7 +30,8 @@ public:
     Image img;
     img.load("../textures/tree.png", true);
     renderer.loadTexture("tree", img, 0);
-    // TODO: Use the width and the height of the image to scale the billboard
+
+    // set the global image dimentions 
     imgW = img.width();
     imgH = img.height();
 
@@ -37,7 +43,7 @@ public:
     elevation = 0;
   }
 
-
+  // UI allows for rotation of billboard
   void mouseMotion(int x, int y, int dx, int dy) {
     if (mouseIsDown(GLFW_MOUSE_BUTTON_LEFT)) {
         azimuth -= dx*(0.02f);
@@ -66,6 +72,7 @@ public:
   void mouseUp(int button, int mods) {
   }
 
+  // UI allows for zooming in and out on bilboard
   void scroll(float dx, float dy) {
       radius+=dy;
     if(radius<=0){
@@ -78,6 +85,7 @@ public:
     eyePos = vec3(x,y,z);
   }
 
+  /* draw the billboard and plane with updated model matrix in response to user input*/
   void draw() {
     renderer.beginShader("simple-texture");
 
@@ -107,6 +115,8 @@ public:
 
     renderer.push();
     renderer.rotate(theta,vec3(0,1,0));
+
+    // Use the width and the height of the image to scale the billboard
     renderer.scale(vec3(imgW/imgH, imgH/imgH, 1.0f));
     renderer.translate(vec3(-0.5, -0.5, 0));
     renderer.quad(); // vertices span from (0,0,0) to (1,1,0)

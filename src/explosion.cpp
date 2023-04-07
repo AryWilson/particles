@@ -1,9 +1,8 @@
 // Bryn Mawr College, alinen, 2020
-//
+// edited: awilson, April 2023
 
-// Your program should modify billboard-animated.vs to compute the UV coordinates based on the number of rows and columns in the sprite sheet and the current frame.
-
-// Your program should modify explosion.cpp to change the current frame based on the time. The animation framerate should be 30 frames per second.
+/* uses billboard-animated shaders to implement sprite changes
+changes the current frame based on the time. The animation framerate is 30 frames per second. */
 
 #include <cmath>
 #include <string>
@@ -20,6 +19,7 @@ public:
   Viewer() : Window() {
   }
 
+  /* load the spite texture and the shader that implements frame changes*/
   void setup() {
     setWindowSize(1000, 1000);
     renderer.loadShader("billboard-animated", 
@@ -46,13 +46,13 @@ public:
     eyePos.z += dy;
   }
 
+  /* calculate the change in frame rate, call the shader*/
   void draw() {
     renderer.beginShader("billboard-animated");
     renderer.texture("image", "explosion");
 
     // 30 fps => each frame 1/30 long, e.g. when time = 1s, we play frame 30
-    // frame = round(((clock()%1000)/1000.0f)*30.0f); // 30 sprites
-    frame = round(((clock())/1000.0f)); // infinite sprites
+    frame = round(((clock())/1000.0f)*30); 
 
     renderer.setUniform("Frame", frame);
     renderer.setUniform("Rows", numRows);

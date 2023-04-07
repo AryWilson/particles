@@ -1,9 +1,7 @@
 // Bryn Mawr College, alinen, 2020
-//
+// edited: awilson, April 2023
 
-// Your program should modify billboard-animated.vs to compute the UV coordinates based on the number of rows and columns in the sprite sheet and the current frame.
-
-// Your program should modify explosion.cpp to change the current frame based on the time. The animation framerate should be 30 frames per second.
+/*uses a shader to use a sprite board as part of an animation. Sprites are animated prior to the shader being used.*/
 
 #include <cmath>
 #include <string>
@@ -20,6 +18,7 @@ public:
   Viewer() : Window() {
   }
 
+  /* load the spite texture and the shader that implements frame changes*/
   void setup() {
     setWindowSize(1000, 1000);
     renderer.loadShader("billboard-animated", 
@@ -46,6 +45,10 @@ public:
     eyePos.z += dy;
   }
 
+  /* calculate the change in frame rate, 
+  * update the opacity, 
+  * update the position,
+  * call the shader*/
   void draw() {
     renderer.beginShader("billboard-animated");
     renderer.texture("image", "fire");
@@ -53,16 +56,19 @@ public:
     // 30 fps => each frame 1/30 long, e.g. when time = 1s, we play frame 30
     // frame = round(((clock()%1000)/1000.0f)*30.0f); // 30 sprites
     float c = clock();
-    frame = round(((c)/1000.0f)); // infinite sprites
+    frame = round(((c)/1000.0f)); // infinite sprites not 30 fps
     if(oldT + 0.5 < elapsedTime()){
-        // every 4 frames reverse dir
+        // every half second, the sprite chanegd direction
       bol = -1.0f*bol;
       oldT = elapsedTime();
     } 
     upPos.y += bol*dt();
 
-    if(fmod(c,1000)==0){
-
+    // every time the frame changes, reset the alpha, otherwise decrease alpha
+    if(fmod(c,1000)<=10){
+      alpha=1.0f;
+    } else {
+      alpha -= 0.05f;
     }
 
     renderer.setUniform("Frame", frame);
